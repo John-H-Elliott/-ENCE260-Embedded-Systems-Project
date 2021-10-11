@@ -4,7 +4,7 @@
     @brief  --
 
     @defgroup --
-*/
+**/
 #include <stdlib.h>
 #include <stdio.h>
 #include "system.h"
@@ -13,11 +13,15 @@
 #include "navswitch.h"
 #include "pacer.h"
 #include "tinygl.h"
-#include "../../fonts/font5x7_1.h"
+#include "../fonts/font5x7_1.h"
 #include "dodge_dash.h"
 
+#define GAME_RATE 1 /* GAME  */
+#define PACER_RATE 500 /* Pacer loop - controls main loop */
+#define DISPLAY_TASK_RATE 250 /* Message display rate */
 
-/* Define game statements used in the game */
+
+/*---------------------- Define game statements used in the game ----------------------*/
 typedef enum Game_state_e
 {
     GAME_START,
@@ -25,6 +29,12 @@ typedef enum Game_state_e
     GAME_LOSS,
     GAME_RESET
 } Game_state_t;
+
+
+
+
+/*---------------------- 1 ----------------------*/
+
 
 
 
@@ -43,13 +53,29 @@ typedef enum Game_state_e
 
 int main (void)
 {
-    system_init ();
+    /*---------------------- Modules Initialisation ----------------------*/
+    system_init();
+    led_init();
+    button_init ();
+    navswitch_init ();
+    pacer_init (PACER_RATE);
+
+    tinygl_font_set(&font5x7_1);
+    tinygl_init(PACER_RATE);
+    tinygl_text_speed_set(DISPLAY_TASK_RATE);
+    tinygl_text_mode_set(TINYGL_TEXT_MODE_SCROLL);
+    tinygl_text_speed_set (25);
 
 
+
+
+    /*---------------------- Main loop ----------------------*/
     while (1)
     {
+        pacer_wait();
 
 
+        
 
     }
 }
