@@ -41,4 +41,16 @@ typedef struct
 
 
 
+
+
+
+/*---------------------- functions ----------------------*/
+
+void ninja_initalpos ();
+
+void ninja_movement ();
+
+
+
+
 #endif

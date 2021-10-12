@@ -71,7 +71,7 @@ int main (void)
 
 
     ninja_t ninja;
-    ninja_initalpos ()
+    ninja_initalpos ();
     tinygl_draw_point (ninja.pos, ninja.active);
     led_set (LED1, ninja.active);
 
@@ -81,7 +81,7 @@ int main (void)
         pacer_wait();  /* Wait for next tick.  */
 
         navswitch_update ();  /* Update info from navswitch  */
-        ninja_movement ()    /* Update new position of ninja  */
+        ninja_movement ();    /* Update new position of ninja  */
 
         tinygl_update ();
         
