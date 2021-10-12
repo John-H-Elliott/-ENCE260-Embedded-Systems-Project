@@ -5,44 +5,61 @@
 
     @defgroup --
 **/
-
+#include <stdio.h>
+#include "navswitch.h"
 #include "dodge_dash.h"
-#include "tinygl.h"
 
-
-/*---------------------- initial the position of ninjia  ----------------------*/
-static void ninja_initalpos ()
+/*---------------------- initial the position of ninja  ----------------------*/
+void ninja_init(ninja_t* ninja)
 {
-    ninja.pos.x = TINYGL_WIDTH / 2;
-    ninja.pos.y = TINYGL_HEIGHT / 2;
-    ninja.active = 1;
+    ninja->pos.x = TINYGL_WIDTH - 1;
+    ninja->pos.y = TINYGL_HEIGHT - 1;
+    ninja->active = true;
 }
 
-/*---------------------- change the position of ninjia  with the navigation switch----------------------*/
-static void ninja_movement ()
+
+/*---------------------- change the position of ninja  with the navigation switch----------------------*/
+void ninja_movement(ninja_t* ninja)
 {
-    if (navswitch_push_event_p (NAVSWITCH_WEST) && ninja.pos.x > 1)
+    navswitch_update(); // Update info from navswitch.
+    if (navswitch_push_event_p(NAVSWITCH_WEST) && ninja->pos.x > 1)
     {
-        ninja.pos.x--;
+        ninja->pos.x--;
     }
 
-    if (navswitch_push_event_p (NAVSWITCH_EAST) && ninja.pos.x < TINYGL_WIDTH - 1)
+    if (navswitch_push_event_p(NAVSWITCH_EAST) && ninja->pos.x < TINYGL_WIDTH - 1)
     {
-        ninja.pos.x++;
+        ninja->pos.x++;
     }
 
-    if (navswitch_push_event_p (NAVSWITCH_SOUTH) && ninja.pos.y < TINYGL_HEIGHT - 1)
+    if (navswitch_push_event_p(NAVSWITCH_SOUTH) && ninja->pos.y < TINYGL_HEIGHT - 1)
     {
-        ninja.pos.y++;
+        ninja->pos.y++;
     }
 
-    if (navswitch_push_event_p (NAVSWITCH_NORTH) && ninja.pos.y > 1)
+    if (navswitch_push_event_p(NAVSWITCH_NORTH) && ninja->pos.y > 1)
     {
-        ninja.pos.y--;
+        ninja->pos.y--;
+        
     }
+
+    update_ninja_pos(*ninja);
+    
 }
 
-/*---------------------- change the position of ninjia  with the navigation switch----------------------*/
+/*---------------------- change the position of ninja  with the navigation switch----------------------*/
 
+void update_ninja_pos(ninja_t ninja) 
+{
+
+    static tinygl_point_t last_pos = {5, 7}; // Impossible position.
+    
+    if (last_pos.x != 5) { // Checks that there is a last position.
+        tinygl_draw_point(last_pos, 0); // Turns off last point.
+    }
+    
+    tinygl_draw_point(ninja.pos, ninja.active); // Turns on new point.
+    last_pos = ninja.pos;
+}
 
 

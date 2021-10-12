@@ -16,11 +16,10 @@ all: game.out
 
 
 # Compile: create object files from C source files.
-game.o: game.c dodge_dash.h ../../drivers/avr/system.h ../../drivers/led.h ../../drivers/navswitch.h ../../drivers/avr/ir_uart.h ../../drivers/button.h \
-../../drivers/display.h ../../drivers/navswitch.h ../../utils/font.h ../../utils/pacer.h ../../utils/tinygl.h
+game.o: game.c dodge_dash.h ../../drivers/avr/system.h ../../drivers/led.h ../../drivers/button.h ../../drivers/navswitch.h ../../drivers/display.h ../../fonts/font5x7_1.h ../../utils/font.h ../../utils/pacer.h ../../utils/tinygl.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-dodge_dash.o: dodge_dash.c ../../drivers/avr/system.h ../../utils/tinygl.h
+dodge_dash.o: dodge_dash.c ../../drivers/navswitch.h ../../drivers/avr/system.h ../../utils/tinygl.h dodge_dash.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
 pio.o: ../../drivers/avr/pio.c ../../drivers/avr/pio.h ../../drivers/avr/system.h
@@ -60,8 +59,7 @@ pacer.o: ../../utils/pacer.c ../../drivers/avr/system.h ../../drivers/avr/timer.
 
 
 # Link: create ELF output file from object files.
-game.out: game.o pio.o system.o timer.o button.o navswitch.o display.o ledmat.o font.o pacer.o tinygl.o
-
+game.out: game.o dodge_dash.o pio.o system.o timer.o button.o navswitch.o display.o ledmat.o font.o pacer.o tinygl.o led.o
 	$(CC) $(CFLAGS) $^ -o $@ -lm
 	$(SIZE) $@
 

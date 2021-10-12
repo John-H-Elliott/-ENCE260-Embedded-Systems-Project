@@ -5,20 +5,18 @@
 
     @defgroup --
 **/
-#include <stdlib.h>
-#include <stdio.h>
 #include "system.h"
+#include "navswitch.h"
 #include "led.h"
 #include "button.h"
-#include "navswitch.h"
 #include "pacer.h"
 #include "tinygl.h"
 #include "../fonts/font5x7_1.h"
 #include "dodge_dash.h"
 
-#define NINJA_SPEED 1 /* The Ninja move speed  */
-#define LOOP_RATE 300/* Define polling rate in Hz. */
-#define DISPLAY_TASK_RATE 250 /* Message display rate */
+#define NINJA_SPEED 1           /* The Ninja move speed  */
+#define LOOP_RATE 500           /* Define polling rate in Hz. */
+#define DISPLAY_TASK_RATE 10   /* Message display rate */
 
 
 /*---------------------- Define game statements used in the game ----------------------*/
@@ -42,48 +40,37 @@ typedef enum Game_state_e
 
 
 
-
-
-
-
-
-
-
-
-
-
 int main (void)
 {
     /*---------------------- Modules Initialisation ----------------------*/
     system_init();
     led_init();
-    button_init ();
-    navswitch_init ();
-    pacer_init (LOOP_RATE);
-
+    button_init();
+    navswitch_init();
+    
+    ninja_t ninja;
     
     tinygl_init(LOOP_RATE);
     tinygl_font_set(&font5x7_1);
     tinygl_text_speed_set(DISPLAY_TASK_RATE);
-    tinygl_text_mode_set(TINYGL_TEXT_MODE_SCROLL);
-    tinygl_text_speed_set (25);
+    //tinygl_text_mode_set(TINYGL_TEXT_MODE_SCROLL);
+    //tinygl_text_speed_set(25);
 
 
+    ninja_init(&ninja); // Start in the bottem right.
+    update_ninja_pos(ninja);
+    led_set(LED1, ninja.active); // Turns the blue light on to show the ninja is still alive.
 
-    ninja_t ninja;
-    ninja_initalpos ();
-    tinygl_draw_point (ninja.pos, ninja.active);
-    led_set (LED1, ninja.active);
 
+    pacer_init (LOOP_RATE);
     /*---------------------- Main loop ----------------------*/
     while (1)
     {
-        pacer_wait();  /* Wait for next tick.  */
+        pacer_wait(); // Wait for next tick.
 
-        navswitch_update ();  /* Update info from navswitch  */
-        ninja_movement ();    /* Update new position of ninja  */
-
-        tinygl_update ();
+        ninja_movement(&ninja);
+        //ninja_movement(&ninja); // Update new position of ninja
+        tinygl_update();
         
 
     }
