@@ -20,31 +20,22 @@ typedef enum {PIX_OFF, PIX_NINJA, PIX_LASER} dodge_pix_type_t;
 /*---------------------- define dodge type ----------------------*/
 typedef enum {DODGE_NINJA, DODGE_LASER} dodge_type_t;
 
-/*---------------------- type define dodge position by X,Y ----------------------*/
-typedef struct
-{
-    int8_t x;
-    int8_t y;
-} dodge_pos_t;
 
-/*---------------------- type define ninja position by X,Y ----------------------*/
-typedef struct
+/*---------------------- type define ninja current position by X,Y ----------------------*/
+typedef struct 
 {
-    dodge_pos_t pos;
+    /* Current pos of ninja.  */
+    tinygl_point_t pos;
+    /* Current state of ninja.  */
     bool active;
-} dodge_obj_t;
+} ninja_t;
+
+
 
 
 
 /*---------------------- main structure ----------------------*/
-typedef struct
-{
-    dodge_pos_t ninja;
-    dodge_pos_t laser;
 
-
-    bool active;
-} dodge_t;
 
 
 

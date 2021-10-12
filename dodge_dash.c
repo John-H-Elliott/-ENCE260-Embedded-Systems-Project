@@ -10,21 +10,39 @@
 #include "tinygl.h"
 
 
-
-static void ninja_pixel_set (ninja_pos_t *pos, pix_type_t type)
+/*---------------------- initial the position of ninjia  ----------------------*/
+static void ninja_initalpos ()
 {
-    
+    ninja.pos.x = TINYGL_WIDTH / 2;
+    ninja.pos.y = TINYGL_HEIGHT / 2;
+    ninja.active = 1;
 }
 
-
-
-static void ninja_movement() 
+/*---------------------- change the position of ninjia  with the navigation switch----------------------*/
+static void ninja_movement ()
 {
-    int8_t ninja_x;
-    int8_t ninja_y;
+    if (navswitch_push_event_p (NAVSWITCH_WEST) && ninja.pos.x > 1)
+    {
+        ninja.pos.x--;
+    }
 
-    ninja_pixel_set ();
+    if (navswitch_push_event_p (NAVSWITCH_EAST) && ninja.pos.x < TINYGL_WIDTH - 1)
+    {
+        ninja.pos.x++;
+    }
 
+    if (navswitch_push_event_p (NAVSWITCH_SOUTH) && ninja.pos.y < TINYGL_HEIGHT - 1)
+    {
+        ninja.pos.y++;
+    }
 
-    ninja_pixel_set ();
+    if (navswitch_push_event_p (NAVSWITCH_NORTH) && ninja.pos.y > 1)
+    {
+        ninja.pos.y--;
+    }
 }
+
+/*---------------------- change the position of ninjia  with the navigation switch----------------------*/
+
+
+
