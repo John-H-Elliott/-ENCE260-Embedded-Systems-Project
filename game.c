@@ -7,6 +7,8 @@
  * @defgroup --
 **/
 
+#include <avr/io.h>
+#include <stdlib.h>
 #include "system.h"
 #include "navswitch.h"
 #include "led.h"
@@ -31,6 +33,10 @@ typedef enum Game_state_e
     GAME_RESET
 } Game_state_t;
 
+typedef struct {
+    uint8_t rows;
+    uint8_t cols;
+} Laser_bitmap;
 
 void lightup_boarders(void) 
 {
@@ -41,6 +47,32 @@ void lightup_boarders(void)
     tinygl_draw_line(point1, point3, 1);
 }
 
+void turn_on_bitmap(Laser_bitmap bitmap)
+{
+    //loop through rows
+    for (uint8_t i=0; i < 6; i++) {
+        if (bitmap.rows & (1 << i)) {
+            tinygl_point_t point1 = {0, i + 1};
+            tinygl_point_t point2 = {4, i + 1};
+            tinygl_draw_line(point1, point2, 1);
+        }
+    }
+    //loop through cols
+    for (uint8_t i=0; i < 4; i++) {
+        if (bitmap.cols & (1 << i)) {
+            tinygl_point_t point1 = {i + 1, 0};
+            tinygl_point_t point2 = {i + 1, 6};
+            tinygl_draw_line(point1, point2, 1);
+        }
+    }
+}
+
+Laser_bitmap get_valid_bitmap(void)
+{
+    srand(TCNT1);
+    Laser_bitmap bitmap = {rand() % 62, rand() % 14}; // (row-bit-right is top), (col-bit-right is left)
+    return bitmap;
+}
 
 int main (void)
 {
@@ -51,6 +83,14 @@ int main (void)
     led_set(LED1, 0); // Off as the game doesn't start until the button is pressed.
     button_init();
     navswitch_init();
+
+    /** Clock
+    TCCR0A = 0x00; 
+    TCCR0B = 0x05; TCNT0 = 0; */
+
+    TCCR1A = 0x00; 
+    TCCR1B = 0x05; 
+    TCCR1C = 0x00; 
 
     // Text modules    
     tinygl_init(LOOP_RATE);
@@ -80,6 +120,8 @@ int main (void)
                 tinygl_clear();
                 led_set(LED1, ninja.active); // Turns the blue light on to show the ninja is alive and games starting.
                 lightup_boarders();
+                Laser_bitmap bitmap = get_valid_bitmap();
+                turn_on_bitmap(bitmap);
             }
             break;
         case GAME_START:
