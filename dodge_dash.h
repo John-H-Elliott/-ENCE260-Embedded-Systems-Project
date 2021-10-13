@@ -56,5 +56,4 @@ void ninja_movement(ninja_t* ninja);
 void update_ninja_pos(ninja_t ninja);
 
 
-
 #endif

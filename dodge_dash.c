@@ -16,7 +16,7 @@ void ninja_init(ninja_t* ninja)
 {
     ninja->pos.x = TINYGL_WIDTH - 1;
     ninja->pos.y = TINYGL_HEIGHT - 1;
-    ninja->active = true;
+    ninja->active = 1;
 }
 
 
@@ -48,6 +48,8 @@ void ninja_movement(ninja_t* ninja)
     update_ninja_pos(*ninja);
     
 }
+
+
 
 /*---------------------- change the position of ninja  with the navigation switch----------------------*/
 

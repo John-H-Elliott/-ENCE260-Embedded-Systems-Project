@@ -32,6 +32,15 @@ typedef enum Game_state_e
 } Game_state_t;
 
 
+void lightup_boarders(void) 
+{
+    tinygl_point_t point1 = {0, 0};
+    tinygl_point_t point2 = {4, 0};
+    tinygl_point_t point3 = {0, 6};
+    tinygl_draw_line(point1, point2, 1);
+    tinygl_draw_line(point1, point3, 1);
+}
+
 
 int main (void)
 {
@@ -42,8 +51,7 @@ int main (void)
     led_set(LED1, 0); // Off as the game doesn't start until the button is pressed.
     button_init();
     navswitch_init();
-    
-    
+
     // Text modules    
     tinygl_init(LOOP_RATE);
     tinygl_font_set(&font5x7_1);
@@ -71,10 +79,12 @@ int main (void)
                 game_state = GAME_START;
                 tinygl_clear();
                 led_set(LED1, ninja.active); // Turns the blue light on to show the ninja is alive and games starting.
+                lightup_boarders();
             }
             break;
         case GAME_START:
             ninja_movement(&ninja);
+
             break;
         case GAME_OVER:
             /* code */
