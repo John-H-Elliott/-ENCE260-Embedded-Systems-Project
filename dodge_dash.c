@@ -1,10 +1,12 @@
-/** @file   dodge_dash.c
-    @author ZHAN (mzh99)      ELLIOTT (jel119)
-    @date   20 October 2021
-    @brief  --
-
-    @defgroup --
+/** 
+ * @file   dodge_dash.c
+ * @author ZHAN (mzh99)      
+ * @author JOHN ELLIOTT (jel119)
+ * @date   20 October 2021
+ * @brief  --
+ * @defgroup --
 **/
+
 #include <stdio.h>
 #include "navswitch.h"
 #include "dodge_dash.h"
@@ -51,13 +53,10 @@ void ninja_movement(ninja_t* ninja)
 
 void update_ninja_pos(ninja_t ninja) 
 {
-
     static tinygl_point_t last_pos = {5, 7}; // Impossible position.
-    
-    if (last_pos.x != 5) { // Checks that there is a last position.
-        tinygl_draw_point(last_pos, 0); // Turns off last point.
-    }
-    
+    // Note: As tinygl_draw_point call display_pixel_set which returns on invalid point 
+    //       The first time the update_ninja_pos is called its impossible position wont cause an error.
+    tinygl_draw_point(last_pos, 0); // Turns off last point.
     tinygl_draw_point(ninja.pos, ninja.active); // Turns on new point.
     last_pos = ninja.pos;
 }

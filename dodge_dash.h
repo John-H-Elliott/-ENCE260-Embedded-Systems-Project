@@ -1,10 +1,12 @@
-/** @file   dodge_dash.h
-    @author ZHAN (mzh99)      ELLIOTT (jel119)
-    @date   20 October 2021
-    @brief  --
-
-    @defgroup --
+/** 
+ * @file   dodge_dash.h
+ * @author ZHAN (mzh99)      
+ * @author JOHN ELLIOTT (jel119)
+ * @date   20 October 2021
+ * @brief  --
+ * @defgroup --
 **/
+
 #ifndef DODGE_DASH_H
 #define DODGE_DASH_H
 

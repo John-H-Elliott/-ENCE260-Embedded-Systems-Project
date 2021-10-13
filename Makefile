@@ -1,5 +1,6 @@
 # File:   Makefile
-# Author: ZHAN (mzh99)      ELLIOTT (jel119)
+# Author: ZHAN (mzh99)      
+# Author: JOHN ELLIOTT (jel119)
 # Date:   20 October 2021
 # Descr:  Makefile for game
 
