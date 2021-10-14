@@ -63,7 +63,7 @@ pacer.o: ../../utils/pacer.c ../../drivers/avr/system.h ../../drivers/avr/timer.
 
 
 # Link: create ELF output file from object files.
-game.out: game.o dodge_dash.o pio.o system.o timer.o button.o navswitch.o display.o ledmat.o font.o pacer.o tinygl.o led.o lasers.o
+game.out: game.o ninja.o lasers.o pio.o system.o timer.o button.o navswitch.o display.o ledmat.o font.o pacer.o tinygl.o led.o lasers.o
 	$(CC) $(CFLAGS) $^ -o $@ -lm
 	$(SIZE) $@
 

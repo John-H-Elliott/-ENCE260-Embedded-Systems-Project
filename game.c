@@ -21,14 +21,15 @@
 #include "lasers.h"
 
 #define LOOP_RATE 500           /* Define polling rate in Hz. */
-#define DISPLAY_TASK_RATE 10    /* Message display rate */
+#define DISPLAY_TASK_RATE 15    /* Message display rate */
 #define FLASH_RATE 3 /* This is the rate (Hz) of flasher changes.  */
 #define LASER_RATE 20 /* This is the rate (Hz) of flasher changes.  */
-
+#define WIN_SC 5 /* This is the score to win the game.  */
 /*---------------------- Define game statements used in the game ----------------------*/
 
 typedef enum Game_state_e
 {
+    PATTERN_CHOOSE,
     START_SCREEN,
     GAME_START,
     GAME_OVER,
@@ -78,20 +79,23 @@ int main (void)
     TCCR1C = 0x00;
 
     // Tasks counters
-    uint16_t flash_tick;
-    uint16_t laser_tick;
+    uint16_t flash_tick = 0;
+    uint16_t laser_tick = 0;
     Laser_bitmap_t bitmap;
-    bool lasers_on;
+    bool lasers_on = false;
 
     screen_init();
 
+    // Score record 
+    uint16_t score = 0;
+
     // Ninja (player) and game state initialization.
     ninja_t ninja;
-    Game_state_t game_state = START_SCREEN;
+    Game_state_t game_state = PATTERN_CHOOSE;
 
     // Initializes the pacer.
     pacer_init(LOOP_RATE);
-    tinygl_text("Dodge & Dash! Press Button To Start");
+    tinygl_text("Dodge&Dash! Press Button To Start!");
 
     /*---------------------- Main loop ----------------------*/
     while (1)
@@ -100,6 +104,17 @@ int main (void)
 
         switch (game_state) 
         {
+        case PATTERN_CHOOSE:
+            button_update();
+            if (button_push_event_p(BUTTON1)) {
+                tinygl_text("Pattern");
+                score = 0;  // clear the score
+                game_state = START_SCREEN;
+            }
+
+            break;
+
+
         case START_SCREEN:
             button_update();
             if (button_push_event_p(BUTTON1)) {
@@ -129,6 +144,13 @@ int main (void)
                 if (!lasers_on) {
                     bitmap = get_valid_bitmap();
                 }
+
+                if (score >= WIN_SC) {  // Win condition
+                    game_state = PATTERN_CHOOSE;
+                    tinygl_clear();
+                    tinygl_text("WIN!");
+                }
+                score++;
             }
             
             if (lasers_on && (laser_hit_ninja(bitmap, &ninja))) {
@@ -138,6 +160,9 @@ int main (void)
                 tinygl_clear();
                 tinygl_text("Game Over!");
             }
+
+            
+                         
             break;
         case GAME_OVER:
             game_state = START_SCREEN;
