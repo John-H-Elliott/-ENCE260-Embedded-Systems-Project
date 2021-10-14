@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 #include "navswitch.h"
-#include "dodge_dash.h"
+#include "ninja.h"
 
 /*---------------------- initial the position of ninja  ----------------------*/
 void ninja_init(ninja_t* ninja)
@@ -20,36 +20,24 @@ void ninja_init(ninja_t* ninja)
 }
 
 
+
 /*---------------------- change the position of ninja  with the navigation switch----------------------*/
 void ninja_movement(ninja_t* ninja)
 {
     navswitch_update(); // Update info from navswitch.
-    if (navswitch_push_event_p(NAVSWITCH_WEST) && ninja->pos.x > 1)
-    {
+    if (navswitch_push_event_p(NAVSWITCH_WEST) && ninja->pos.x > 1) {
         ninja->pos.x--;
-    }
-
-    if (navswitch_push_event_p(NAVSWITCH_EAST) && ninja->pos.x < TINYGL_WIDTH - 1)
-    {
+    } else if (navswitch_push_event_p(NAVSWITCH_EAST) && ninja->pos.x < TINYGL_WIDTH - 1) {
         ninja->pos.x++;
-    }
-
-    if (navswitch_push_event_p(NAVSWITCH_SOUTH) && ninja->pos.y < TINYGL_HEIGHT - 1)
-    {
+    } else if (navswitch_push_event_p(NAVSWITCH_SOUTH) && ninja->pos.y < TINYGL_HEIGHT - 1) {
         ninja->pos.y++;
-    }
-
-    if (navswitch_push_event_p(NAVSWITCH_NORTH) && ninja->pos.y > 1)
-    {
+    } else if (navswitch_push_event_p(NAVSWITCH_NORTH) && ninja->pos.y > 1) {
         ninja->pos.y--;
         
     }
 
     update_ninja_pos(*ninja);
-    
 }
-
-
 
 /*---------------------- change the position of ninja  with the navigation switch----------------------*/
 

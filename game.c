@@ -8,8 +8,8 @@
 **/
 
 #include <avr/io.h>
-#include <stdlib.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include "system.h"
 #include "navswitch.h"
 #include "led.h"
@@ -17,15 +17,13 @@
 #include "pacer.h"
 #include "tinygl.h"
 #include "../fonts/font5x7_1.h"
-#include "dodge_dash.h"
+#include "ninja.h"
+#include "lasers.h"
 
-#define NINJA_SPEED 1           /* The Ninja move speed  */
 #define LOOP_RATE 500           /* Define polling rate in Hz. */
-#define DISPLAY_TASK_RATE 10   /* Message display rate */
-
-
-
-#define FLASH_RATE 10 /* This is the rate (Hz) of flasher changes.  */
+#define DISPLAY_TASK_RATE 10    /* Message display rate */
+#define FLASH_RATE 3 /* This is the rate (Hz) of flasher changes.  */
+#define LASER_RATE 20 /* This is the rate (Hz) of flasher changes.  */
 
 /*---------------------- Define game statements used in the game ----------------------*/
 
@@ -36,16 +34,6 @@ typedef enum Game_state_e
     GAME_OVER,
     GAME_RESET
 } Game_state_t;
-
-typedef struct {
-    uint8_t rows;
-    uint8_t cols;
-} Laser_bitmap;
-
-
-
-
-
 
 
 
@@ -58,107 +46,21 @@ typedef struct {
    PERIOD (s)              - how often the flash pattern repeats
 */
 
-
-
-
-void lightup_boarders(void) 
-{
-    tinygl_point_t point1 = {0, 0};
-    tinygl_point_t point2 = {4, 0};
-    tinygl_point_t point3 = {0, 6};
-    tinygl_draw_line(point1, point2, 1);
-    tinygl_draw_line(point1, point3, 1);
+void init_game(Game_state_t *game_state, ninja_t *ninja, Laser_bitmap_t *bitmap) {
+    *game_state = GAME_START;
+    tinygl_clear();
+    led_set(LED1, ninja->active); // Turns the blue light on to show the ninja is alive and games starting.
+    lightup_boarders();
+    *bitmap = get_valid_bitmap();
+    update_ninja_pos(*ninja);
 }
 
-void turn_on_bitmap(Laser_bitmap bitmap)
-{
-    //loop through rows
-    for (uint8_t i=0; i < 6; i++) {
-        if (bitmap.rows & (1 << i)) {
-            tinygl_point_t point1 = {0, i + 1};
-            tinygl_point_t point2 = {4, i + 1};
-            tinygl_draw_line(point1, point2, 1);
-        }
-    }
-    //loop through cols
-    for (uint8_t i=0; i < 4; i++) {
-        if (bitmap.cols & (1 << i)) {
-            tinygl_point_t point1 = {i + 1, 0};
-            tinygl_point_t point2 = {i + 1, 6};
-            tinygl_draw_line(point1, point2, 1);
-        }
-    }
-}
-
-
-void turn_off_bitmap(Laser_bitmap bitmap)
-{
-    //loop through rows
-    for (uint8_t i=0; i < 6; i++) {
-        if (bitmap.rows & (1 << i)) {
-            tinygl_point_t point1 = {0, i + 1};
-            tinygl_point_t point2 = {4, i + 1};
-            tinygl_draw_line(point1, point2, 0);
-        }
-    }
-    //loop through cols
-    for (uint8_t i=0; i < 4; i++) {
-        if (bitmap.cols & (1 << i)) {
-            tinygl_point_t point1 = {i + 1, 0};
-            tinygl_point_t point2 = {i + 1, 6};
-            tinygl_draw_line(point1, point2, 0);
-        }
-    }
-}
-
-
-void prev_flash_off(Laser_bitmap bitmap)
-{
-    //loop through rows
-    for (uint8_t i=0; i < 6; i++) {
-        if (bitmap.rows & (1 << i)) {
-            tinygl_point_t point1 = {0, i + 1};
-            tinygl_draw_point(point1, 0);
-        }
-    }
-    //loop through cols
-    for (uint8_t i=0; i < 4; i++) {
-        if (bitmap.cols & (1 << i)) {
-            tinygl_point_t point1 = {i + 1, 0};
-            tinygl_draw_point(point1, 0);
-        }
-    }
-}
-
-void prev_flash_on(Laser_bitmap bitmap)
-{
-    //loop through rows
-    for (uint8_t i=0; i < 6; i++) {
-        if (bitmap.rows & (1 << i)) {
-            tinygl_point_t point1 = {0, i + 1};
-            tinygl_draw_point(point1, 1);
-        }
-    }
-    //loop through cols
-    for (uint8_t i=0; i < 4; i++) {
-        if (bitmap.cols & (1 << i)) {
-            tinygl_point_t point1 = {i + 1, 0};
-            tinygl_draw_point(point1, 1);
-        }
-    }
-}
-
-
-
-
-
-
-
-Laser_bitmap get_valid_bitmap(void)
-{
-    srand(TCNT1);
-    Laser_bitmap bitmap = {rand() % 62, rand() % 14}; // (row-bit-right is top), (col-bit-right is left)
-    return bitmap;
+void screen_init(void) {
+        // Text modules    
+    tinygl_init(LOOP_RATE);
+    tinygl_font_set(&font5x7_1);
+    tinygl_text_speed_set(DISPLAY_TASK_RATE);
+    tinygl_text_mode_set(TINYGL_TEXT_MODE_SCROLL);
 }
 
 int main (void)
@@ -170,87 +72,75 @@ int main (void)
     led_set(LED1, 0); // Off as the game doesn't start until the button is pressed.
     button_init();
     navswitch_init();
-
-    /** Clock
-    TCCR0A = 0x00; 
-    TCCR0B = 0x05; TCNT0 = 0; */
-
+    // Start Counter with 8bit-prescaler.
     TCCR1A = 0x00; 
     TCCR1B = 0x05; 
     TCCR1C = 0x00;
 
-    uint16_t flash_tick = 0;
-    bool flash_flag = false; 
+    // Tasks counters
+    uint16_t flash_tick;
+    uint16_t laser_tick;
+    Laser_bitmap_t bitmap;
+    bool lasers_on;
 
-
-    // Text modules    
-    tinygl_init(LOOP_RATE);
-    tinygl_font_set(&font5x7_1);
-    tinygl_text_speed_set(DISPLAY_TASK_RATE);
-    tinygl_text_mode_set(TINYGL_TEXT_MODE_SCROLL);
+    screen_init();
 
     // Ninja (player) and game state initialization.
     ninja_t ninja;
-    ninja_init(&ninja); // Start in the bottem right.
-    update_ninja_pos(ninja);
     Game_state_t game_state = START_SCREEN;
 
     // Initializes the pacer.
     pacer_init(LOOP_RATE);
     tinygl_text("Dodge & Dash! Press Button To Start");
+
     /*---------------------- Main loop ----------------------*/
     while (1)
     {
         pacer_wait(); // Wait for next tick.
-        flash_tick++;
 
-        switch (game_state)
+        switch (game_state) 
         {
         case START_SCREEN:
             button_update();
             if (button_push_event_p(BUTTON1)) {
-                game_state = GAME_START;
-                tinygl_clear();
-                led_set(LED1, ninja.active); // Turns the blue light on to show the ninja is alive and games starting.
-                lightup_boarders();
-                Laser_bitmap bitmap = get_valid_bitmap();
-                turn_on_bitmap(bitmap);
-
-                if (flash_tick >= LOOP_RATE / FLASH_RATE ) { // Flasher part
-                    flash_tick = 0;
-                    if (!flash_flag)
-                    {
-                        prev_flash_off(bitmap);
-                        flash_flag = true;
-                    }
-                    else
-                    {
-                        prev_flash_on(bitmap);
-                        flash_flag = false;
-                    }
-                }
-
+                ninja_init(&ninja); // Start in the bottem right.
+                flash_tick = 0;
+                laser_tick = 0;
+                lasers_on = false;
+                init_game(&game_state, &ninja, &bitmap);
+                
             }
-
-            
-
-                
-                
-                
-        
             break;
+
         case GAME_START:
             ninja_movement(&ninja);
 
-
-
-
+            flash_tick++;
+            if ((flash_tick >= (LOOP_RATE / FLASH_RATE)) && (!lasers_on)) {
+                flash_tick = 0;
+                change_laser_flash(bitmap);
+            }
+            
+            laser_tick++;
+            if (laser_tick >= (LOOP_RATE * FLASH_RATE)) {
+                laser_tick = 0;
+                change_laser_fire(bitmap);
+                lasers_on = !lasers_on;
+                if (!lasers_on) {
+                    bitmap = get_valid_bitmap();
+                }
+            }
+            
+            if (lasers_on && (laser_hit_ninja(bitmap, &ninja))) {
+                game_state = GAME_OVER;
+                led_set(LED1, ninja.active);
+                change_laser_fire(bitmap);
+                tinygl_clear();
+                tinygl_text("Game Over!");
+            }
             break;
         case GAME_OVER:
-            /* code */
-            break;
-        case GAME_RESET:
-            /* code */
+            game_state = START_SCREEN;
             break;
         default:
             break;
