@@ -23,6 +23,25 @@ typedef enum {PIX_OFF, PIX_NINJA, PIX_LASER} dodge_pix_type_t;
 typedef enum {DODGE_NINJA, DODGE_LASER} dodge_type_t;
 
 
+
+
+
+/*
+ Define polling rates in Hz.  
+enum {DISPLAY_UPDATE_RATE = 500};
+enum {FLASHER_UPDATE_RATE = 500};
+enum {BUTTON_POLL_RATE = 100};
+enum {GAME_UPDATE_RATE = 100};
+enum {GAME_OVER_PERIOD = 2};
+enum {BUTTON_HOLD_PERIOD = 1};*/
+
+
+
+
+
+
+
+
 /*---------------------- type define ninja current position by X,Y ----------------------*/
 typedef struct 
 {
