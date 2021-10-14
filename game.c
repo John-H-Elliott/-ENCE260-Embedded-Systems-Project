@@ -144,12 +144,6 @@ int main (void)
                 if (!lasers_on) {
                     bitmap = get_valid_bitmap();
                 }
-
-                if (score >= WIN_SC) {  // Win condition
-                    game_state = PATTERN_CHOOSE;
-                    tinygl_clear();
-                    tinygl_text("WIN!");
-                }
                 score++;
             }
             
@@ -165,6 +159,7 @@ int main (void)
                          
             break;
         case GAME_OVER:
+            tinygl_text("Game Over!");
             game_state = START_SCREEN;
             break;
         default:
