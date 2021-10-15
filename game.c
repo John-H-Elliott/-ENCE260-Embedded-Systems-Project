@@ -155,8 +155,7 @@ int main (void)
                 tinygl_text("Game Over!");
             }
 
-            
-                         
+                                   
             break;
         case GAME_OVER:
             tinygl_text("Game Over!");
