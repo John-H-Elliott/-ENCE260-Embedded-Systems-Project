@@ -10,26 +10,26 @@
 #ifndef NINJA_H
 #define NINJA_H
 
+#include <stdbool.h>
 #include "tinygl.h"
 
 
-/*---------------------- structs and enums ----------------------*/
+/*----------------------- | Structs | -----------------------*/
 
 typedef struct 
 {
-    /* Current pos of ninja.  */
-    tinygl_point_t pos;
-    /* Current state of ninja.  */
-    bool active;
-
+    tinygl_point_t pos; // Current postion of the ninja.
+    bool active; // Current state of the ninja (alive or dead).
 } ninja_t;
 
 
-/*---------------------- functions ----------------------*/
+/*---------------------- | Functions | ----------------------*/
 
 void ninja_init(ninja_t*);
 
 void ninja_movement(ninja_t*);
+
+bool thrown_smoke_bomb(void);
 
 void update_ninja_pos(ninja_t);
 

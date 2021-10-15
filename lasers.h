@@ -15,9 +15,14 @@
 #include "tinygl.h"
 #include "ninja.h"
 
+#define LASER_ROW_MIN 0
+#define LASER_COL_MIN 0
+#define LASER_ROW_MAX 6
+#define LASER_COL_MAX 4
+#define ON 1
+#define OFF 0
 
-
-/*---------------------- structs and enums ----------------------*/
+/*----------------------- | Structs | -----------------------*/
 
 typedef struct {
     uint8_t rows;
@@ -25,15 +30,7 @@ typedef struct {
 } Laser_bitmap_t;
 
 
-typedef enum {
-    LASER_ROW_MIN = 0,
-    LASER_COL_MIN = 0,
-    LASER_ROW_MAX = 4, 
-    LASER_COL_MAX = 6
-} Laser_point_t;
-
-
-/*---------------------- functions ----------------------*/
+/*---------------------- | Functions | ----------------------*/
 
 void lightup_boarders(void);
 
@@ -44,5 +41,6 @@ void change_laser_flash(Laser_bitmap_t);
 Laser_bitmap_t get_valid_bitmap(void);
 
 bool laser_hit_ninja(Laser_bitmap_t, ninja_t*);
+
 
 #endif

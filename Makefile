@@ -23,7 +23,7 @@ game.o: game.c ninja.h lasers.h ../../drivers/avr/system.h ../../drivers/led.h .
 lasers.o: lasers.c ../../drivers/avr/system.h ../../utils/tinygl.h lasers.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-ninja.o: ninja.c ../../drivers/navswitch.h ../../drivers/avr/system.h ../../utils/tinygl.h ninja.h
+ninja.o: ninja.c ../../drivers/navswitch.h ../../drivers/avr/system.h ../../utils/tinygl.h ninja.h ../../utils/tinygl.h lasers.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
 pio.o: ../../drivers/avr/pio.c ../../drivers/avr/pio.h ../../drivers/avr/system.h
@@ -63,7 +63,7 @@ pacer.o: ../../utils/pacer.c ../../drivers/avr/system.h ../../drivers/avr/timer.
 
 
 # Link: create ELF output file from object files.
-game.out: game.o ninja.o lasers.o pio.o system.o timer.o button.o navswitch.o display.o ledmat.o font.o pacer.o tinygl.o led.o lasers.o
+game.out: game.o ninja.o pio.o system.o timer.o button.o navswitch.o display.o ledmat.o font.o pacer.o tinygl.o led.o lasers.o
 	$(CC) $(CFLAGS) $^ -o $@ -lm
 	$(SIZE) $@
 
