@@ -6,8 +6,6 @@
 
 ## How To Play!
 
----
-
 ### **Aim of the Game**
 
 >_You are a ninja and your village is being raided by a enemy clan from the future.  
@@ -31,11 +29,10 @@
 >The side of the screen will have LEDS flash. This indicates where the lasers will be coming from.  
 >The Ninja will only have a certain amount of time to move between the lasers to dodge them before they are fired and fill up the screen.
 >**As time goes on the lasers will get faster and faster.**
+
 ---
 
 ## How to Compile the Game
-
----
 
 To run the game you will need University of Canterbury Fun Kits Version-4 ([UCFK4](https://checkout.canterbury.ac.nz/cart.php?action=buy&sku=1000200&source=buy_button "UCFK4 in Store")) and the approate cable ([USB Mini-B](https://checkout.canterbury.ac.nz/cart.php?action=buy&sku=1000201&source=buy_button "Cable in Store")).  
 
@@ -64,8 +61,6 @@ For optional tidiness you can run the following.
 
 ## How to Flash Game onto the Board
 
----
-
 1. To flash the game onto the board you must have the **UCFK4** connected via the **USB Mini-B** cable to the computer.
 
 2. Then run the `make program` command to compile and flash the game onto the board.
@@ -73,8 +68,6 @@ For optional tidiness you can run the following.
 ---
 
 ## Authors
-
----
 
 **John Elliott** (_[Jel119](mailto:jel119@uclive.ac.nz "John Elliott UC Email")_)  
 **Menghao Zhan** (_[mzh99](mailto:mzh99@uclive.ac.nz "Menghao Zhan UC Email")_)
