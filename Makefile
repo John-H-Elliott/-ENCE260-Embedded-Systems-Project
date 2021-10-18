@@ -2,11 +2,11 @@
 # Author: ZHAN (mzh99)      
 # Author: JOHN ELLIOTT (jel119)
 # Date:   20 October 2021
-# Descr:  Makefile for game
+# Descr:  Makefile for game.
 
 # Definitions.
 CC = avr-gcc
-CFLAGS = -mmcu=atmega32u2 -Os -Wall -Wstrict-prototypes -Wextra -g -I../../utils -I../../fonts -I../../drivers -I../../drivers/avr
+CFLAGS = -mmcu=atmega32u2 -Os -Wall -Wstrict-prototypes -Wextra -g -I../../utils -I../../fonts -I../../drivers -I../../drivers/avr -I../../extra
 OBJCOPY = avr-objcopy
 SIZE = avr-size
 DEL = rm
@@ -17,7 +17,16 @@ all: game.out
 
 
 # Compile: create object files from C source files.
-game.o: game.c ninja.h lasers.h ../../drivers/avr/system.h ../../drivers/led.h ../../drivers/button.h ../../drivers/navswitch.h ../../drivers/display.h ../../fonts/font5x7_1.h ../../utils/font.h ../../utils/pacer.h ../../utils/tinygl.h
+game.o: game.c ninja.h music.h lasers.h ../../drivers/avr/system.h ../../drivers/led.h ../../drivers/button.h ../../drivers/navswitch.h ../../drivers/display.h ../../fonts/font3x5_1.h ../../utils/font.h 
+	$(CC) -c $(CFLAGS) $< -o $@
+
+music.o: music.c ../../extra/mmelody.h ../../drivers/avr/system.h ../../extra/tweeter.h ../../drivers/avr/pio.h music.h
+	$(CC) -c $(CFLAGS) $< -o $@
+
+mmelody.o: ../../extra/mmelody.c ../../drivers/avr/system.h ../../extra/mmelody.h
+	$(CC) -c $(CFLAGS) $< -o $@
+
+tweeter.o: ../../extra/tweeter.c ../../drivers/avr/system.h ../../extra/ticker.h ../../extra/tweeter.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
 lasers.o: lasers.c ../../drivers/avr/system.h ../../utils/tinygl.h lasers.h
@@ -61,9 +70,8 @@ pacer.o: ../../utils/pacer.c ../../drivers/avr/system.h ../../drivers/avr/timer.
 
 
 
-
 # Link: create ELF output file from object files.
-game.out: game.o ninja.o pio.o system.o timer.o button.o navswitch.o display.o ledmat.o font.o pacer.o tinygl.o led.o lasers.o
+game.out: game.o ninja.o pio.o system.o timer.o button.o ledmat.o navswitch.o display.o font.o pacer.o tinygl.o led.o lasers.o mmelody.o tweeter.o music.o
 	$(CC) $(CFLAGS) $^ -o $@ -lm
 	$(SIZE) $@
 
@@ -79,5 +87,3 @@ clean:
 program: game.out
 	$(OBJCOPY) -O ihex game.out game.hex
 	dfu-programmer atmega32u2 erase; dfu-programmer atmega32u2 flash game.hex; dfu-programmer atmega32u2 start
-
-

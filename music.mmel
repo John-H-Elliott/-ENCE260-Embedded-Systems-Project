@@ -1,0 +1,14 @@
+/** 
+ * @file    music.mmel
+ * @author  ZHAN (mzh99)      
+ * @author  JOHN ELLIOTT (jel119)
+ * @date    18 October 2021
+ * 
+ * @brief   This is the music file which is imported into the music module to get the songs notes.
+ * 
+ * @note    Original song 'Temple of Love'.
+ * 
+ * @note    This file ends with a ':' which tells the mmelody module to restart the song.
+**/
+
+"*8E3EBBE2EB3BDDAAD4DA3AA2AE3EAABBC4CB3BAAGGEEBBE2EB3BDDAAD4DA3AA2AE3EAABBC4CB3BAABB:"

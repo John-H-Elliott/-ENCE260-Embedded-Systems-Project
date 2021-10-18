@@ -1,10 +1,11 @@
 /** 
- * @file   dodge_dash.h
- * @author ZHAN (mzh99)      
- * @author JOHN ELLIOTT (jel119)
- * @date   20 October 2021
- * @brief  --
- * @defgroup --
+ * @file    ninja.h
+ * @author  ZHAN (mzh99)      
+ * @author  JOHN ELLIOTT (jel119)
+ * @date    10 October 2021
+ * 
+ * @brief   This module defines the player (ninja) and functions
+ *          used by ninja.c.
 **/
 
 #ifndef NINJA_H
@@ -33,5 +34,6 @@ bool thrown_smoke_bomb(void);
 
 void update_ninja_pos(ninja_t);
 
+void ninja_flash(ninja_t);
 
 #endif

@@ -1,10 +1,11 @@
 /** 
- * @file   dodge_dash.c
- * @author ZHAN (mzh99)      
- * @author JOHN ELLIOTT (jel119)
- * @date   20 October 2021
- * @brief  --
- * @defgroup --
+ * @file    lasers.c
+ * @author  ZHAN (mzh99)      
+ * @author  JOHN ELLIOTT (jel119)
+ * @date    15 October 2021
+ * 
+ * @brief   This module defines the how led-mat lights up for the game.
+ *          Also, it makes bitmaps for the game and checks if the player has been hit by a laser.
 **/
 
 #include "lasers.h"

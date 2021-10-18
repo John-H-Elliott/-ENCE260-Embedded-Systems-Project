@@ -1,10 +1,11 @@
 /** 
- * @file   dodge_dash.h
- * @author ZHAN (mzh99)      
- * @author JOHN ELLIOTT (jel119)
- * @date   20 October 2021
- * @brief  --
- * @defgroup --
+ * @file    lasers.h
+ * @author  ZHAN (mzh99)      
+ * @author  JOHN ELLIOTT (jel119)
+ * @date    15 October 2021
+ * 
+ * @brief   This module defines the rows and columns of the led-mat in terms of the game.
+ *          Also, it defines the bitmap system and functions for laser.c.
 **/
 
 #ifndef LASERS_H
@@ -14,6 +15,9 @@
 #include <stdbool.h>
 #include "tinygl.h"
 #include "ninja.h"
+
+
+/*----------------------- | Defines | -----------------------*/
 
 #define LASER_ROW_MIN 0
 #define LASER_COL_MIN 0
