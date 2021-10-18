@@ -1,6 +1,6 @@
 /** 
  * @file    game.c
- * @author  ZHAN (mzh99)
+ * @author  MENGHAO ZHAN (mzh99)
  * @author  JOHN ELLIOTT (jel119)
  * @date    5 October 2021
  * 
@@ -33,8 +33,10 @@
 #define FLASH_RATE 300            // This is the rate of the laser flashing.
 #define LASER_DEFAULT_RATE 5000   // This is the rate of the lasers firing.
 #define MAX_INT 65535             // This is the maximum value of a uint16_t.
+#define MAX_ARRAY 24              // This defines the max size of the end screen char array.
 #define LASER_SPEED_MAX 3500      // This is the maximum speed that the lasers will be speed up by.
-
+#define SMOKE_BOMB_MAX 5          // This is the number of smoke bombs the player has.
+#define LASER_SPEED_INCREASE 100  // This is the speed which the lasers are increased by each time.
 
 /*---------------------- | Game Setup | ----------------------*/
 
@@ -134,7 +136,7 @@ int main (void)
                 laser_tick = 0;
                 score = 0;
                 laser_speed = 0;
-                smoke_bombs = 5;
+                smoke_bombs = SMOKE_BOMB_MAX;
                 lasers_on = OFF;
                 bomb_thrown = false;
                 
@@ -195,7 +197,7 @@ int main (void)
                                 score++; // Laser survied so score increases.
                             }
                             if (laser_speed < LASER_SPEED_MAX) { // Ensures lasers aren't too fast.
-                                laser_speed += 100;
+                                laser_speed += LASER_SPEED_INCREASE;
                             }
                         } else {
                             game_state = GAME_OVER; // Final lasers are done and the game is over.
@@ -215,7 +217,7 @@ int main (void)
             case GAME_OVER: // Resets to the start to wait for a new game.
                 tinygl_clear(); // Clears the game screen.
                 
-                char end_text[24]; 
+                char end_text[MAX_ARRAY]; 
                 // There is no overflow possible as the array can hold the string (with \0) and maximum size of the uint16_t.
                 sprintf(end_text,"GAME OVER! SCORE: %d", score);  // Adds score to the game over string.
                 tinygl_text(end_text);

@@ -1,6 +1,6 @@
 /** 
  * @file    lasers.h
- * @author  ZHAN (mzh99)      
+ * @author  MENGHAO ZHAN (mzh99)      
  * @author  JOHN ELLIOTT (jel119)
  * @date    15 October 2021
  * 
@@ -25,6 +25,8 @@
 #define LASER_COL_MAX 4
 #define ON 1
 #define OFF 0
+#define MAX_COL 14
+#define MAX_ROW 62
 
 /*----------------------- | Structs | -----------------------*/
 

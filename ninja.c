@@ -1,6 +1,6 @@
 /** 
  * @file    ninja.c
- * @author  ZHAN (mzh99)      
+ * @author  MENGHAO ZHAN (mzh99)      
  * @author  JOHN ELLIOTT (jel119)
  * @date    10 October 2021
  * 
@@ -28,7 +28,7 @@ void ninja_movement(ninja_t* ninja)
 {
     navswitch_update(); // Update information from navswitch.
 
-    if (navswitch_push_event_p(NAVSWITCH_WEST) && (ninja->pos.x > 1)) {
+    if (navswitch_push_event_p(NAVSWITCH_WEST) && (ninja->pos.x > PLAYER_START)) {
         ninja->pos.x--;
         update_ninja_pos(*ninja);
     } else if (navswitch_push_event_p(NAVSWITCH_EAST) && (ninja->pos.x < LASER_COL_MAX)) {
@@ -37,7 +37,7 @@ void ninja_movement(ninja_t* ninja)
     } else if (navswitch_push_event_p(NAVSWITCH_SOUTH) && (ninja->pos.y < LASER_ROW_MAX)) {
         ninja->pos.y++;
         update_ninja_pos(*ninja);
-    } else if (navswitch_push_event_p(NAVSWITCH_NORTH) && ninja->pos.y > 1) {
+    } else if (navswitch_push_event_p(NAVSWITCH_NORTH) && ninja->pos.y > PLAYER_START) {
         ninja->pos.y--;
         update_ninja_pos(*ninja);
     }

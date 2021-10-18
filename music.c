@@ -1,6 +1,6 @@
 /** 
  * @file    music.c
- * @author  ZHAN (mzh99)      
+ * @author  MENGHAO ZHAN (mzh99)      
  * @author  JOHN ELLIOTT (jel119)
  * @date    18 October 2021
  * 

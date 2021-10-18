@@ -1,6 +1,6 @@
 /** 
  * @file    lasers.c
- * @author  ZHAN (mzh99)      
+ * @author  MENGHAO ZHAN (mzh99)      
  * @author  JOHN ELLIOTT (jel119)
  * @date    15 October 2021
  * 
@@ -28,7 +28,7 @@ Laser_bitmap_t get_valid_bitmap(void) // Gets a bitmap which ensures the player 
 {
     srand(TCNT1); // Seeds the random number to the press of the button to give a sense of randomness.
     // 62 and 14 are digit equivlents of binary (maximum - 1) bitmap.
-    Laser_bitmap_t laser_bitmap= {rand() % 62, rand() % 14}; // Note: (row-bit-right is top), (col-bit-right is left)
+    Laser_bitmap_t laser_bitmap= {rand() % MAX_ROW, rand() % MAX_COL}; // Note: (row-bit-right is top), (col-bit-right is left)
     return laser_bitmap;
 }
 

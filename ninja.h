@@ -1,6 +1,6 @@
 /** 
  * @file    ninja.h
- * @author  ZHAN (mzh99)      
+ * @author  MENGHAO ZHAN (mzh99)      
  * @author  JOHN ELLIOTT (jel119)
  * @date    10 October 2021
  * 
@@ -14,6 +14,8 @@
 #include <stdbool.h>
 #include "tinygl.h"
 
+
+#define PLAYER_START 1
 
 /*----------------------- | Structs | -----------------------*/
 
