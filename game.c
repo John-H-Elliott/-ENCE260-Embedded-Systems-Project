@@ -80,12 +80,12 @@ int main (void)
 
     // Tasks counters.
     uint16_t flash_tick;
-    uint16_t laser_tick;
+    uint16_t laser_tick = 0;
     uint16_t laser_speed;
     uint8_t smoke_bombs;
     Laser_bitmap_t bitmap;
     bool lasers_on;
-    bool bomb_thrown;
+    bool bomb_thrown = false;
 
     // Score record. 
     uint16_t score;
