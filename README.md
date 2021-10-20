@@ -36,7 +36,7 @@
 
 To run the game you will need University of Canterbury Fun Kits Version-4 ([UCFK4](https://checkout.canterbury.ac.nz/cart.php?action=buy&sku=1000200&source=buy_button "UCFK4 in Store")) and the approate cable ([USB Mini-B](https://checkout.canterbury.ac.nz/cart.php?action=buy&sku=1000201&source=buy_button "Cable in Store")). 
 
-This game is compiled using the **gcc-avr** compiler and needs certain required packages. To install these packages ensure you are running a **Linux** distribution and run the following command in the console. Also, the game uses modules that can be found in the [UCFK4-Git-Repository](https://eng-git.canterbury.ac.nz/rmc84/ence260-ucfk4.git "UCFK4 Git").
+This game is compiled using the **gcc-avr** compiler and needs certain required packages. To install these packages ensure you are running a **Linux** distribution and run the following command in the console. Also, the game uses modules that can be found in the [UCFK4-Git-Repository](https://eng-git.canterbury.ac.nz/rmc84/ence260-ucfk4.git "UCFK4 Git"). This requires a UC Eng-Git account to access.
 
 ```Console
 sudo apt-get install git gcc-avr binutils-avr avr-libc dfu-programmer
